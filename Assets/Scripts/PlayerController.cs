@@ -8,6 +8,8 @@ public class PlayerController : MonoBehaviour
     SpriteRenderer spr;
     Rigidbody2D rgb;
     Animator animator;
+    Vector3 lastCheckpointPosition;
+    Vector3 lastCheckpointPosition2;
     //Variables para animaciones
     int aQuieto=0;
     int aCaminar=1;
@@ -73,5 +75,28 @@ public class PlayerController : MonoBehaviour
 
     void CambiarAnimacion(int animation){
         animator.SetInteger("Estado",animation);
+    }
+    private void OnCollisionEnter2D(Collision2D other)
+    {
+        if(other.gameObject.tag =="DarkHole")//para colisionar con el piso de fondo
+        {
+            if(lastCheckpointPosition != null)
+            {
+                transform.position = lastCheckpointPosition;
+            }
+            if(lastCheckpointPosition2 !=null){
+                transform.position=lastCheckpointPosition2;
+            }
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D other)
+    {
+        if(other.gameObject.tag=="CheckPoint"){
+            lastCheckpointPosition = transform.position;
+        }
+        if(other.gameObject.tag=="CheckPoint"){
+            lastCheckpointPosition2=transform.position;
+        }
     }
 }
