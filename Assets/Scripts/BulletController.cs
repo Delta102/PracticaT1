@@ -9,12 +9,13 @@ public class BulletController : MonoBehaviour
 {
     float velocity=15;
     Rigidbody2D rb;
-    public TMP_Text scoreTexT;
     float realVelocity;
+    private GameManager_Escena2 gameManager;
     // Start is called before the first frame update
     void Start()
     {
         rb=GetComponent<Rigidbody2D>();
+        gameManager=FindObjectOfType<GameManager_Escena2>();
     }
     // Update is called once per frame
     void Update()
@@ -38,7 +39,8 @@ public class BulletController : MonoBehaviour
     private void OnCollisionEnter2D (Collision2D other){
         Destroy(this.gameObject);
         if(other.gameObject.tag=="Enemy"){
-            Destroy(other.gameObject);          
+            Destroy(other.gameObject);
+            gameManager.ganarPuntaje(10);
         }
     }
 }

@@ -15,15 +15,15 @@ public class PlayerController : MonoBehaviour
     public GameManagerController gameManager;
 
     //Variables para animaciones
-    int aQuieto=0;
+    /*int aQuieto=0;
     int aCaminar=1;
-    int aCorrer=2;
+    int aCorrer=2;*/
     int aJump=3;
     int aAtaque=4;
     //Variables para funciones
-    int jumpForce=15;
-    int velocityCaminar=5;
-    int velocityCorrer=12;
+    int jumpForce=45;
+    /*int velocityCaminar=5;
+    int velocityCorrer=12;*/
     void Start()
     {
         spr=GetComponent<SpriteRenderer>();
@@ -35,7 +35,6 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CambiarAnimacion(aCorrer);
          rgb.velocity=new Vector2(5,0);
 
         if(Input.GetKeyUp(KeyCode.F) && gameManager.Cantidad()>0){
@@ -124,11 +123,12 @@ public class PlayerController : MonoBehaviour
             if(lastCheckpointPosition2 !=null){
                 transform.position=lastCheckpointPosition2;
             }
-            if(other.gameObject.tag=="Enemy"){
-                Debug.Log("f");
-                Destroy(this.gameObject);          
-            }
         }
+
+        if(other.gameObject.tag=="Enemy"){
+            Debug.Log("f");        
+        }
+
     }
 
     /*void OnTriggerEnter2D(Collider2D other)

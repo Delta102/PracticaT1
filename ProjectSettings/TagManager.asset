@@ -7,6 +7,9 @@ TagManager:
   - DarkHole
   - CheckPoint
   - Enemy
+  - Moneda
+  - MonedaTipo1
+  - MonedaTipo2
   layers:
   - Default
   - TransparentFX
@@ -14,7 +17,7 @@ TagManager:
   - 
   - Water
   - UI
-  - 
+  - Suelo
   - 
   - 
   - 
