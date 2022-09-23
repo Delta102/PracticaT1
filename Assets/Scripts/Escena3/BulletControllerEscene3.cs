@@ -1,14 +1,12 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.UI;
-using System;
-using TMPro;
 
-public class BulletController : MonoBehaviour
+public class BulletControllerEscene3 : MonoBehaviour
 {
     int vida=3;
     float velocity=15;
+    int temp=0;
     Rigidbody2D rb;
     float realVelocity;
     private GameManagerEscena3 gameManager;
@@ -25,27 +23,28 @@ public class BulletController : MonoBehaviour
         Destroy(this.gameObject, 5); //Después de 5 segundos y si el objeto no colisiona con nada el objeto desaparece para evitar consumo de memoria
     }
 
-    public void SetRightDirection(){
-        realVelocity=velocity;
+    public void SetDirection(bool temp){
+        if(temp==true)
+            realVelocity=velocity;
+        else if(temp==false)
+            realVelocity-=velocity;
     }
 
-    public void SetLeftDirection(){
-        realVelocity=-velocity;
+    public void SetTipoBala(int b){
+        temp=b;
     }
-
-    /*public void SetScoreText(Text scoreText){
-        this.scoreTexT=scoreTexT;
-    }*/
 
     private void OnCollisionEnter2D (Collision2D other){
         Destroy(this.gameObject);
-        if(other.gameObject.tag=="Enemy"){
-            gameManager.PerderVida(1);
-            if(gameManager.vida_Zombie==0){
-                Destroy(other.gameObject);
-            }
-                
             //gameManager.ganarPuntaje(10);
-        }
+        Debug.Log("Temp=" +temp);
+        if(temp==1)
+            gameManager.PerderVida(1);
+        if(temp==2)
+            gameManager.PerderVida(2);
+        if(temp==3)
+            gameManager.PerderVida(3);
+        if(gameManager.vida_Zombie<=0)
+            Destroy(other.gameObject);
     }
 }

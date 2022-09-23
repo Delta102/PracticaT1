@@ -14,17 +14,23 @@ public class GameManager_Escena2 : MonoBehaviour
     public int tipo1;
     public int tipo2;
     public int puntaje;
+    //public Vector3 lposicion;
 
     void Start()
     {
         puntaje=0;
         tipo1=0;
         tipo2=0;
+        //lposicion=new Vector3(0,0,0);
         LoadGame();
         PrintPuntajeInScreen();
         Printt1InScreen();
         Printt2InScreen();
     }
+
+    /*public Vector3 Lposicion(){
+        return lposicion;
+    }*/
 
     public int Tipo1()
     {
@@ -41,6 +47,9 @@ public class GameManager_Escena2 : MonoBehaviour
         return puntaje;
     }
 
+    /*public void guardarPosicion(Vector3 lastPosition){
+        lposicion=lastPosition;
+    }*/
     public void ganarPuntaje(int a){
         puntaje+=a;
         PrintPuntajeInScreen();
@@ -59,7 +68,7 @@ public class GameManager_Escena2 : MonoBehaviour
     }
 
     public void SaveGame(){
-        var filePath=Application.persistentDataPath+("/save.dat");
+        var filePath=Path.Combine(Application.persistentDataPath, "gameData.dat");
         FileStream file;
         if(File.Exists(filePath))
             file=File.OpenWrite(filePath);
@@ -68,6 +77,7 @@ public class GameManager_Escena2 : MonoBehaviour
         
         GameData data=new GameData();
         data.Score=puntaje;
+        //data.posicion=lposicion;
         data.tipo1=tipo1;
         data.tipo2=tipo2;
 
@@ -77,7 +87,7 @@ public class GameManager_Escena2 : MonoBehaviour
     }
 
     public void LoadGame(){
-        var filePath=Application.persistentDataPath+("/save.dat");
+        var filePath=Path.Combine(Application.persistentDataPath, "gameData.dat");
         FileStream file;
         if(File.Exists(filePath))
             file=File.OpenRead(filePath);
@@ -91,6 +101,8 @@ public class GameManager_Escena2 : MonoBehaviour
         file.Close();
 
         puntaje=data.Score;
+        tipo1=data.tipo1;
+        tipo2=data.tipo2;
         PrintPuntajeInScreen();
     }
 

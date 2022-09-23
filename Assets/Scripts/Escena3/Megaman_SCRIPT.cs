@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player_Explorer : MonoBehaviour
+public class Megaman_SCRIPT : MonoBehaviour
 {
     //Componentes del Player
     SpriteRenderer sr;
@@ -15,15 +15,18 @@ public class Player_Explorer : MonoBehaviour
     public float time = 0;
     public float seg = 0;
 
+    private GameObject temp;
     public GameObject bullet;
     public GameObject bulletm;
     public GameObject bulletg;
 
     private GameManager_Escena2 gameManager;
+    private GameManagerEscena3 gameManager2;
 
     //Variables Animaciones
     int pQuieto = 0;
     int pCaminar = 1;
+    int pDisparo=2;
 
     //Variables velocidades;
     int cVelocity = 5;
@@ -33,6 +36,7 @@ public class Player_Explorer : MonoBehaviour
     {
         rb = GetComponent<Rigidbody2D>();
         gameManager = FindObjectOfType<GameManager_Escena2>();
+        gameManager2 = FindObjectOfType<GameManagerEscena3>();
         animator = GetComponent<Animator>();
         sr = GetComponent<SpriteRenderer>();
         cl = GetComponent<Collider2D>();
@@ -42,8 +46,8 @@ public class Player_Explorer : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        time = 0;
-        seg = 0;
+        //time = 0;
+        //seg = 0;
         Renderizado();
         Salto();
         CheckGround();
@@ -76,48 +80,45 @@ public class Player_Explorer : MonoBehaviour
             CambiarAnimacion(pCaminar);
         }
         //<<!!!Disparo¡¡¡<<//
+        if(Input.GetKey(KeyCode.X)){
+            time+=Time.deltaTime;
+            seg = Mathf.Floor(time % 60);
+            CambiarAnimacion(pDisparo);
+        }
+
+        Debug.Log("Tiempo Inicial: " + seg);
         if (Input.GetKeyUp(KeyCode.X))
         {
-            //Se crea la bala de acuerdo a la posicion del player
-            time += Time.time;
-            seg = time % 60;
-            seg = Mathf.Round(seg);
-
-            Debug.Log("Tiempo Inicial: " + seg);
             //Bala Pequeña
-            if (seg == 1)
+            if (seg >= 0 && seg<2)
             {
                 if (sr.flipX == false)
-                    disparo(3);
+                    disparo(3, true, 1);
                 if (sr.flipX == true)
-                    disparo(-3);
-
+                    disparo(-3, false, 1);
                 time = 0;
                 seg = 0;
             }
             //Bala Mediana
-            if (seg == 3)
+            if (seg >= 2 && seg<4)
             {
-                Debug.Log("Tiempo: " + seg);
                 if (sr.flipX == false)
-                    disparo2(3);
+                    disparo(3, true, 2);
 
                 if (sr.flipX == true)
-                    disparo2(-3);
-
+                    disparo(-3, false, 2);
                 time = 0;
                 seg = 0;
             }
 
             //Bala Grande
-            if (seg == 5)
+            if (seg >= 4)
             {
-                Debug.Log("Tiempo: " + seg);
                 if (sr.flipX == false)
-                    disparo3(3);
+                    disparo(3, true, 3);
 
                 if (sr.flipX == true)
-                    disparo3(-3);
+                    disparo(-3, false, 3);
 
                 time = 0;
                 seg = 0;
@@ -154,56 +155,20 @@ public class Player_Explorer : MonoBehaviour
         }
     }
 
-    private void disparo(int a)
+    private void disparo(int a, bool t, int tipo)
     {
-        if (a > 0)
-        {
+        if(tipo==1)
+            temp=bullet;
+        if(tipo==2)
+            temp=bulletm;
+        if(tipo==3)
+            temp=bulletg;
+
             var bulletPosition = transform.position + new Vector3(a, 0, 0);
-            var gb = Instantiate(bullet, bulletPosition, Quaternion.identity) as GameObject;
-            var controller = gb.GetComponent<BulletController>();
-            controller.SetRightDirection();
-        }
-        if (a < 0)
-        {
-            var bulletPosition = transform.position + new Vector3(a, 0, 0);
-            var gb = Instantiate(bullet, bulletPosition, Quaternion.identity) as GameObject;
-            var controller = gb.GetComponent<BulletController>();
-            controller.SetLeftDirection();
-        }
-    }
-    private void disparo2(int a)
-    {
-        if (a > 0)
-        {
-            var bulletPosition = transform.position + new Vector3(a, 0, 0);
-            var gb = Instantiate(bulletm, bulletPosition, Quaternion.identity) as GameObject;
-            var controller = gb.GetComponent<BulletController>();
-            controller.SetRightDirection();
-        }
-        if (a < 0)
-        {
-            var bulletPosition = transform.position + new Vector3(a, 0, 0);
-            var gb = Instantiate(bulletm, bulletPosition, Quaternion.identity) as GameObject;
-            var controller = gb.GetComponent<BulletController>();
-            controller.SetLeftDirection();
-        }
-    }
-    private void disparo3(int a)
-    {
-        if (a > 0)
-        {
-            var bulletPosition = transform.position + new Vector3(a, 0, 0);
-            var gb = Instantiate(bulletg, bulletPosition, Quaternion.identity) as GameObject;
-            var controller = gb.GetComponent<BulletController>();
-            controller.SetRightDirection();
-        }
-        if (a < 0)
-        {
-            var bulletPosition = transform.position + new Vector3(a, 0, 0);
-            var gb = Instantiate(bulletg, bulletPosition, Quaternion.identity) as GameObject;
-            var controller = gb.GetComponent<BulletController>();
-            controller.SetLeftDirection();
-        }
+            var gb = Instantiate(temp, bulletPosition, Quaternion.identity) as GameObject;
+            var controller = gb.GetComponent<BulletControllerEscene3>();
+            controller.SetDirection(t);
+            controller.SetTipoBala(tipo);
     }
 
     private void CheckGround()
