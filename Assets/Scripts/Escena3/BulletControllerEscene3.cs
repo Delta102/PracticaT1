@@ -4,17 +4,21 @@ using UnityEngine;
 
 public class BulletControllerEscene3 : MonoBehaviour
 {
+    Collider2D cl;
     int vida=3;
     float velocity=15;
     int temp=0;
     Rigidbody2D rb;
     float realVelocity;
     private GameManagerEscena3 gameManager;
+    private ZombieController zombieController;
     // Start is called before the first frame update
     void Start()
     {
+        cl=GetComponent<Collider2D>();
         rb=GetComponent<Rigidbody2D>();
         gameManager=FindObjectOfType<GameManagerEscena3>();
+        zombieController=FindObjectOfType<ZombieController>();
     }
     // Update is called once per frame
     void Update()
@@ -29,22 +33,10 @@ public class BulletControllerEscene3 : MonoBehaviour
         else if(temp==false)
             realVelocity-=velocity;
     }
-
     public void SetTipoBala(int b){
         temp=b;
     }
-
-    private void OnCollisionEnter2D (Collision2D other){
+    public void OnCollisionEnter2D(Collision2D other){
         Destroy(this.gameObject);
-            //gameManager.ganarPuntaje(10);
-        Debug.Log("Temp=" +temp);
-        if(temp==1)
-            gameManager.PerderVida(1);
-        if(temp==2)
-            gameManager.PerderVida(2);
-        if(temp==3)
-            gameManager.PerderVida(3);
-        if(gameManager.vida_Zombie<=0)
-            Destroy(other.gameObject);
     }
 }

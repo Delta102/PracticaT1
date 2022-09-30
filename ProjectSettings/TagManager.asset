@@ -10,6 +10,9 @@ TagManager:
   - Moneda
   - MonedaTipo1
   - MonedaTipo2
+  - bala
+  - bala2
+  - bala3
   layers:
   - Default
   - TransparentFX

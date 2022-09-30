@@ -81,6 +81,7 @@ public class Megaman_SCRIPT : MonoBehaviour
         }
         //<<!!!Disparo¡¡¡<<//
         if(Input.GetKey(KeyCode.X)){
+            sr.color=Color.blue;
             time+=Time.deltaTime;
             seg = Mathf.Floor(time % 60);
             CambiarAnimacion(pDisparo);
@@ -136,7 +137,6 @@ public class Megaman_SCRIPT : MonoBehaviour
         if (rb.velocity.x > 0)
             sr.flipX = false;
     }
-
     private void Salto()
     {
         animator.SetFloat("jumpVelocity", rb.velocity.y);//jumpVelocity es el nombre del bool del animator (estado
